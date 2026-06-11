@@ -1,5 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function App() {
   const [penduduk, setPenduduk] = useState([]);
@@ -31,6 +43,41 @@ function App() {
       </div>
     );
   }
+
+  const chartData = {
+    labels: penduduk.map((item) => item.provinsi),
+    datasets: [
+      {
+        label: "Jumlah Penduduk",
+        data: penduduk.map((item) => item.jumlah),
+        backgroundColor: [
+          "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B",
+          "#EF4444", "#06B6D4", "#84CC16", "#F97316",
+          "#EC4899", "#6366F1",
+        ],
+        borderRadius: 6,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Jumlah Penduduk Per Provinsi (2023)",
+        font: { size: 14 },
+      },
+    },
+    scales: {
+      y: {
+        ticks: {
+          callback: (value) => value.toLocaleString("id-ID"),
+        },
+      },
+    },
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -65,6 +112,11 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Bar Chart */}
+      <div className="bg-white rounded-xl shadow p-5 mb-6">
+        <Bar data={chartData} options={chartOptions} />
+      </div>
 
       {/* Tabel Data */}
       <div className="bg-white rounded-xl shadow p-5">
