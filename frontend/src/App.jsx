@@ -113,9 +113,11 @@ function App() {
         </div>
       )}
 
-      {/* Bar Chart */}
+   {/* Bar Chart */}
       <div className="bg-white rounded-xl shadow p-5 mb-6">
-        <Bar data={chartData} options={chartOptions} />
+        <div style={{ height: "400px" }}>
+          <Bar data={chartData} options={{ ...chartOptions, maintainAspectRatio: false }} />
+        </div>
       </div>
 
       {/* Tabel Data */}
